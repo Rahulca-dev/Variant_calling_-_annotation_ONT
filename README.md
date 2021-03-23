@@ -5,6 +5,6 @@ The pipeline uses fastq data for anaysis.
 Tools Integrated in the Pipeline
 1) Porechop
 2) Minimap2
-3) samtool
+3) Samtools
 4) Longshot
 5) Annovar
