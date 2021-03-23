@@ -6,7 +6,7 @@ def alignment(fastq_file,ref_file):
 	path = os.getcwd();
 	fastq = fastq_file.split(".")
 	print("-"*95 + "Genome Alignment" + "-"*95)
-	os.system("minimap2 -a " + ref_file + " " + fastq_file[0] + "_trimmed.fastq  > " + fastq[0] + ".sam")
+	os.system("minimap2 -a " + ref_file + " " + fastq[0] + "_trimmed.fastq  > " + fastq[0] + ".sam")
 	sam_file = glob.glob(path + "/"+ fastq[0] + '.sam');
 	print(sam_file)
 	os.system("samtools view -S -b " + sam_file[0] + " > " + path + "/" + fastq[0] + ".bam")
