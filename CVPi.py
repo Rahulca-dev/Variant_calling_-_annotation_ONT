@@ -2,9 +2,7 @@ import gzip, sys, os, fileinput, argparse, subprocess, glob, pysam, re
 import time
 
 tic = time.perf_counter()
-saveout = sys.stdout
-fsock = open('TEST.log', 'w')
-sys.stdout = fsock
+
 
 
 def alignment(fastq_file,ref_file):
@@ -69,8 +67,15 @@ def validation(fastq_file):
 
 	pass
 
-#def Annotation(Vcf_file):
+def Annotation(Vcf_file,fastq_file):
 
+	fastq = fastq_file.split(".")
+
+	os.system("perl  convert2annovar.pl -format vcf4 " + vcf_file[0] + "  -outfile " + fastq[0] + ".avinput" )
+	fastq = fastq_file.split(".")
+	avinput_file = glob.glob(fastq[0] + '.avinput')
+	os.system("perl table_annovar.pl " + avinput_file[0] + "  humandb/ -buildver hg19  -out "+ fastq[0] +"  -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation gx,r,f,f,f -nastring . -csvout -polish  ")
+	pass
 
 
 
@@ -94,11 +99,15 @@ alignment(fastq_file,ref_file)
 
 Vcalling(fastq_file,ref_file)
 
+fastq = fastq_file.split(".")
+vcf_file = glob.glob(fastq[0] + '.vcf')
+print(vcf_file[0])
+
+Annotation(vcf_file,fastq_file)
+
 toc = time.perf_counter()
 
 time_taken = (toc - tic)/60
 
 print( "Time taken = " + str(time_taken) + "mins")
 
-sys.stdout = saveout
-fsock.close()
